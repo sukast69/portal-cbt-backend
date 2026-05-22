@@ -16,6 +16,7 @@ jobs:
           host: 103.94.239.197
           username: dekas19
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          fingerprint: SHA256:yK6P+CFGOF7qbtxSM19kZs69sH9rUXyfMUmlg9CQyzc
           script: |
             cd /var/www/portal-cbt
             git pull origin main
