@@ -10,10 +10,10 @@ return [
         'http://localhost:3000',
         'http://localhost:3001',
         'https://portal-cbt.my.id',
-        // Add your Vercel preview URLs here if needed
+        'https://sistem-ujian-google-form-smatm-v2.vercel.app',
     ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*.vercel.app'],
 
     'allowed_headers' => ['*'],
 
