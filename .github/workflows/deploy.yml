@@ -10,18 +10,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          host: 103.94.239.197
-          username: dekas19
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          fingerprint: SHA256:yK6P+CFGOF7qbtxSM19kZs69sH9rUXyfMUmlg9CQyzc
-          script: |
-            cd /var/www/portal-cbt
-            git pull origin main
-            composer install --no-dev --no-interaction
-            php artisan migrate --force
-            php artisan optimize:clear
-            sudo chown -R www-data:www-data storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: ssh-keyscan -H 103.94.239.197 >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: |
+          ssh dekas19@103.94.239.197 "cd /var/www/portal-cbt && \
+            git pull origin main && \
+            composer install --no-dev --no-interaction && \
+            php artisan migrate --force && \
+            php artisan optimize:clear && \
+            sudo chown -R www-data:www-data storage bootstrap/cache && \
+            sudo chmod -R 775 storage bootstrap/cache"
